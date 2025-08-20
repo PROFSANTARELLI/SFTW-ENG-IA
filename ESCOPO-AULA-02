@@ -1,0 +1,13 @@
+ESCOPO DO PROJETO: SISTEMA DE AGENDAMENTO DE CONSULTAS MÉDICAS
+
+Backend: FastAPI (Python)
+Banco: SQLITE
+Frontend: HTML/CSS/Jinja (templates do próprio FastAPI)
+Modelagem: diagramas no draw.io
+Documentação: MarkDown no Github
+
+Funções principais:
+Cadastro de médicos e pacientes
+marcação e cancelamento de consultas.
+
+Entregável final: Aplicação Web leve, com tela de cadastro e exclusão de consultas, cadastro de médicos e cadastro de pacientes.
