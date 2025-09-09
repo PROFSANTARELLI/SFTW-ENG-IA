@@ -1,0 +1,192 @@
+Documento de Especificação de Requisitos de Software (ERS)
+1. Introdução
+1.1 Propósito
+O propósito deste documento é detalhar os requisitos funcionais e não-funcionais do Sistema de Agendamento de Consultas Médicas. Ele servirá como uma referência para desenvolvedores, testadores, stakeholders e para o professor da disciplina de AI DRIVEN SOFTWARE ENGINEERING, garantindo que todas as partes interessadas tenham uma compreensão comum do sistema a ser construído.
+1.2 Escopo do Sistema
+O Sistema de Agendamento de Consultas Médicas é uma aplicação web leve, focada nas funcionalidades essenciais de gerenciamento de cadastros de médicos e pacientes, e na marcação e cancelamento de consultas. O objetivo principal é proporcionar uma ferramenta eficiente para a organização da agenda médica e para que pacientes possam agendar e gerenciar suas consultas.
+Tecnologias Envolvidas:
+Backend: FastAPI (Python)
+Banco de Dados: SQLite
+Frontend: HTML/CSS/Jinja (templates do FastAPI)
+Modelagem: Diagramas no draw.io
+Documentação: Markdown no GitHub
+Entregável Final: Aplicação Web leve, com tela de cadastro e exclusão de consultas, cadastro de médicos e cadastro de pacientes.
+1.3 Definições, Acrônimos e Abreviações
+API: Application Programming Interface
+CRUD: Create, Read, Update, Delete
+ERS: Especificação de Requisitos de Software
+FastAPI: Framework web para construir APIs com Python
+Frontend: Interface do usuário (parte do sistema que o usuário interage)
+Backend: Parte do sistema que gerencia a lógica de negócio e o acesso aos dados
+HTML: HyperText Markup Language
+CSS: Cascading Style Sheets
+Jinja: Motor de templates para Python (usado pelo FastAPI para renderizar HTML)
+JSON: JavaScript Object Notation
+PK: Primary Key (Chave Primária)
+FK: Foreign Key (Chave Estrangeira)
+SQLite: Sistema de gerenciamento de banco de dados relacional embutido
+UML: Unified Modeling Language
+QA: Quality Assurance (Garantia de Qualidade)
+1.4 Referências
+Diagrama de Caso de Uso UML (fornecido)
+Diagrama de Classes UML (gerado via XML)
+Escopo do Projeto (fornecido)
+1.5 Visão Geral do Documento
+Este documento está estruturado da seguinte forma:
+Seção 1: Introdução - Apresenta o propósito, escopo e terminologia.
+Seção 2: Descrição Geral - Fornece uma visão de alto nível do sistema, incluindo contexto, funcionalidades principais, usuários e restrições.
+Seção 3: Requisitos Específicos - Detalha os requisitos funcionais e não-funcionais do sistema.
+Seção 4: Modelo de Dados - Descreve a estrutura do banco de dados e as relações entre as entidades.
+Seção 5: Requisitos de Interface do Usuário - Define a aparência e interação do frontend.
+Seção 6: Outros Requisitos - Abrange aspectos de ambiente, operação e segurança.
+2. Descrição Geral
+2.1 Perspectiva do Produto
+O Sistema de Agendamento de Consultas Médicas será uma aplicação web standalone. Embora focado em um ambiente local (SQLite), sua arquitetura baseada em FastAPI permite futura expansão para integração com outros sistemas de saúde ou APIs externas, caso necessário. O frontend será renderizado diretamente pelo backend FastAPI usando Jinja templates.
+2.2 Funções do Produto
+As funções principais do sistema, conforme identificado no diagrama de casos de uso e escopo, incluem:
+Cadastro e gerenciamento de informações de Pacientes.
+Cadastro e gerenciamento de informações de Médicos.
+Agendamento de novas consultas médicas.
+Visualização da agenda médica.
+Reagendamento ou cancelamento de consultas existentes.
+Consulta de dados base (médicos, pacientes, consultas).
+2.3 Características dos Usuários
+O sistema prevê dois tipos principais de usuários:
+Administrador/Secretária (Implícito): Responsável por cadastrar médicos e, possivelmente, auxiliar no cadastro de pacientes e gerenciamento de consultas. Necessita de uma interface intuitiva para realizar operações CRUD.
+Paciente: Pode interagir para agendar e cancelar suas próprias consultas, e visualizar seu histórico (assumindo um futuro login/identificação). Para o escopo atual, será principalmente alvo das funcionalidades de consulta e agendamento operadas pela administração.
+Médico: Pode visualizar sua própria agenda de consultas e consultar informações de pacientes.
+2.4 Restrições Gerais
+Tecnologia: Restrito a FastAPI (Python) para o backend, SQLite para o banco de dados e HTML/CSS/Jinja para o frontend.
+Ambiente de Execução: Aplicação web, acessível via navegador.
+Segurança: Deverá considerar a proteção de dados pessoais (CPF, etc.) conforme princípios básicos.
+Recursos: Deve ser uma aplicação "leve", otimizada para recursos limitados, considerando o SQLite.
+2.5 Suposições e Dependências
+Acesso à Rede: O sistema será acessível através de um navegador web em um ambiente de rede (local ou deploy).
+Navegador Moderno: Os usuários terão acesso a um navegador web moderno e compatível com HTML5, CSS3 e JavaScript.
+Python e Bibliotecas: O ambiente de execução do servidor terá Python 3.x e todas as bibliotecas FastAPI e suas dependências instaladas.
+Modelagem Aceita: A modelagem de dados e arquitetura baseada nos diagramas é aceita como a base para a implementação.
+3. Requisitos Específicos
+Esta seção detalha os requisitos funcionais e não-funcionais do sistema.
+3.1 Requisitos Funcionais (RF)
+Os requisitos funcionais são derivados dos casos de uso identificados e das funções principais do projeto.
+RF.1 Gerenciamento de Pacientes
+RF.1.1 Cadastro de Pacientes:
+O sistema DEVE permitir o registro de um novo paciente.
+Entrada: Nome (texto), CPF (texto, formato específico), Data de Nascimento (data), Telefone (texto, formato opcional).
+Processamento: Validação de CPF único e formato. Armazenamento dos dados na base de dados SQLite.
+Saída: Confirmação de cadastro e exibição do paciente na lista de pacientes.
+RF.1.2 Visualização de Pacientes:
+O sistema DEVE permitir a visualização de uma lista de todos os pacientes cadastrados.
+O sistema DEVE permitir a busca/filtragem de pacientes por nome ou CPF.
+O sistema DEVE permitir a visualização dos detalhes de um paciente específico.
+RF.1.3 Atualização de Pacientes:
+O sistema DEVE permitir a atualização das informações de um paciente existente (exceto CPF, que idealmente não deveria mudar).
+RF.1.4 Exclusão de Pacientes:
+O sistema DEVE permitir a exclusão de um paciente existente, desde que ele não possua consultas futuras agendadas.
+RF.2 Gerenciamento de Médicos
+RF.2.1 Cadastro de Médicos:
+O sistema DEVE permitir o registro de um novo médico.
+Entrada: Nome (texto), Especialidade (texto), CRM (texto, único e formato específico).
+Processamento: Validação de CRM único e formato. Armazenamento dos dados na base de dados SQLite.
+Saída: Confirmação de cadastro e exibição do médico na lista de médicos.
+RF.2.2 Visualização de Médicos:
+O sistema DEVE permitir a visualização de uma lista de todos os médicos cadastrados.
+O sistema DEVE permitir a busca/filtragem de médicos por nome ou especialidade.
+O sistema DEVE permitir a visualização dos detalhes de um médico específico.
+RF.2.3 Atualização de Médicos:
+O sistema DEVE permitir a atualização das informações de um médico existente (exceto CRM, que idealmente não deveria mudar).
+RF.2.4 Exclusão de Médicos:
+O sistema DEVE permitir a exclusão de um médico existente, desde que ele não possua consultas futuras agendadas.
+RF.3 Gerenciamento de Consultas
+RF.3.1 Agendamento de Consultas:
+O sistema DEVE permitir o agendamento de uma nova consulta.
+Entrada: Seleção de Paciente existente, seleção de Médico existente, Data e Hora (datetime).
+Processamento:
+Validação de que o Paciente e o Médico existem na base de dados.
+Validação de disponibilidade: O horário escolhido NÃO DEVE colidir com outras consultas agendadas para o MESMO MÉDICO.
+Definição do status inicial da consulta como 'agendada'.
+Armazenamento dos dados da consulta na base de dados SQLite.
+Saída: Confirmação do agendamento e exibição da consulta na agenda do médico/paciente.
+RF.3.2 Visualização da Agenda Médica:
+O sistema DEVE permitir a visualização da agenda de consultas de um médico específico por um período (ex: diário, semanal).
+A exibição DEVE incluir informações como nome do paciente, data e hora da consulta, e status.
+RF.3.3 Visualização de Consultas de Paciente:
+O sistema DEVE permitir a visualização das consultas agendadas para um paciente específico.
+RF.3.4 Reagendamento de Consultas:
+O sistema DEVE permitir a alteração da data e/ou hora de uma consulta existente.
+Processamento: Deve seguir as mesmas validações de disponibilidade de RF.3.1.
+O status da consulta pode ser alterado para 'reagendada' ou permanecer 'agendada'.
+RF.3.5 Cancelamento de Consultas:
+O sistema DEVE permitir o cancelamento de uma consulta existente.
+Processamento: Alterar o status da consulta para 'cancelada'.
+RF.3.6 Exclusão Física de Consultas:
+O sistema DEVE permitir a exclusão física de um registro de consulta. ATENÇÃO: O escopo menciona "exclusão de consultas" sem especificar se é cancelamento lógico ou exclusão física. Para um sistema simples de projeto, a exclusão física é aceitável, mas em cenários reais, o cancelamento lógico (mudar status) é mais comum para manter histórico. Para o seu projeto, vamos considerar que "exclusão" se refere a remover o registro completamente.
+3.2 Requisitos Não-Funcionais (RNF)
+RNF.1 Performance
+RNF.1.1 Tempo de Resposta: Todas as requisições de API (CRUD) DEVEM responder em menos de 2 segundos, mesmo com dados representativos.
+RNF.1.2 Carregamento de Páginas: As páginas do frontend DEVEM carregar completamente em menos de 3 segundos em condições normais de rede.
+RNF.2 Segurança
+RNF.2.1 Proteção de Dados: Os dados sensíveis (CPF) DEVEM ser armazenados de forma segura (embora SQLite não ofereça criptografia nativa avançada para fins educacionais, a preocupação existe).
+RNF.2.2 Autenticação/Autorização (Básico): Para um projeto universitário simples, um sistema de autenticação completo pode ser excessivo. No entanto, é um ponto de consideração futura. No momento, o acesso pode ser aberto ou com uma autenticação/autorização muito básica se o professor pedir. Por enquanto, assumimos acesso para manipulação de dados.
+RNF.2.3 Validação de Entrada: Todas as entradas de usuário DEVEM ser validadas no backend para prevenir injeções SQL (embora ORMs/FastAPI ajudem nisso) e outros ataques comuns, além de garantir a integridade dos dados.
+RNF.3 Usabilidade
+RNF.3.1 Interface Intuitiva: A interface do usuário DEVEM ser intuitiva e fácil de usar, permitindo que usuários com conhecimento básico de computadores realizem as operações principais sem treinamento extensivo.
+RNF.3.2 Responsividade: A interface do usuário DEVE ser responsiva e se adaptar a diferentes tamanhos de tela (desktop, tablet, mobile), ainda que de forma básica.
+RNF.3.3 Mensagens Claras: O sistema DEVE fornecer mensagens de erro e sucesso claras e informativas para o usuário.
+RNF.4 Confiabilidade
+RNF.4.1 Tratamento de Erros: O sistema DEVE tratar erros inesperados graciosamente, sem travar ou expor informações sensíveis.
+RNF.4.2 Disponibilidade: O sistema DEVE ter alta disponibilidade durante o período de uso, com tempo de inatividade mínimo em caso de erros controlados.
+RNF.5 Manutenibilidade
+RNF.5.1 Código Limpo: O código fonte DEVE ser escrito de forma clara, legível e seguindo as boas práticas de programação em Python (PEP 8).
+RNF.5.2 Documentação de Código: As funções e módulos críticos DEVEM ser documentados com docstrings apropriados.
+RNF.5.3 Testabilidade: O sistema DEVE ser projetado de forma que permita a fácil criação de testes automatizados (unidade, integração).
+RNF.6 Portabilidade
+RNF.6.1 Compatibilidade de Navegador: O frontend DEVE ser compatível com as versões mais recentes dos principais navegadores (Chrome, Firefox, Edge).
+RNF.6.2 Plataforma: O backend, sendo Python/FastAPI, DEVE ser portável entre sistemas operacionais (Linux, Windows, macOS).
+4. Modelo de Dados
+O modelo de dados do sistema será implementado no SQLite, baseado no Diagrama de Classes UML que definimos. As entidades principais e seus atributos são:
+4.1 Entidade Médico
+Representa um médico na clínica.
+id: INTEGER (PK) - Chave primária, gerada automaticamente.
+nome: TEXT - Nome completo do médico.
+especialidade: TEXT - Especialidade médica (ex: "Clínico Geral", "Pediatra").
+crm: TEXT (UNIQUE) - Registro do Conselho Regional de Medicina, deve ser único.
+4.2 Entidade Paciente
+Representa um paciente do sistema.
+id: INTEGER (PK) - Chave primária, gerada automaticamente.
+nome: TEXT - Nome completo do paciente.
+cpf: TEXT (UNIQUE) - Cadastro de Pessoa Física, deve ser único.
+data_nascimento: DATE - Data de nascimento do paciente.
+telefone: TEXT - Telefone de contato do paciente.
+4.3 Entidade Consulta
+Representa uma consulta agendada entre um médico e um paciente.
+id: INTEGER (PK) - Chave primária, gerada automaticamente.
+data_hora: DATETIME - Data e hora exatas da consulta.
+status: TEXT - Status da consulta (ex: "agendada", "confirmada", "cancelada", "realizada").
+medico_id: INTEGER (FK) - Chave estrangeira referenciando Médico.id.
+paciente_id: INTEGER (FK) - Chave estrangeira referenciando Paciente.id.
+4.4 Relacionamentos
+Médico --- (1:M) --- Consulta: Um médico pode ter múltiplas consultas, mas uma consulta pertence a apenas um médico.
+Paciente --- (1:M) --- Consulta: Um paciente pode ter múltiplas consultas, mas uma consulta pertence a apenas um paciente.
+5. Requisitos de Interface do Usuário
+5.1 Geral
+A interface DEVE ser baseada em HTML e estilizada com CSS.
+As páginas DEVEM ser renderizadas usando o motor de templates Jinja no FastAPI.
+A navegação entre as diferentes seções do sistema (cadastro de médicos, cadastro de pacientes, agenda, agendamento de consultas) DEVE ser clara e consistente.
+5.2 Telas Principais (Mock-ups Futuros)
+Tela de Cadastro de Médico: Formulário para inserção dos dados do médico.
+Tela de Listagem/Gerenciamento de Médicos: Tabela com lista de médicos, opções para visualizar detalhes, editar ou excluir.
+Tela de Cadastro de Paciente: Formulário para inserção dos dados do paciente.
+Tela de Listagem/Gerenciamento de Pacientes: Tabela com lista de pacientes, opções para visualizar detalhes, editar ou excluir.
+Tela de Agendamento de Consulta: Formulário para selecionar médico, paciente, data e hora da consulta.
+Tela de Agenda Médica (Listagem de Consultas): Visualização de consultas por médico, data ou período, com opções de reagendar ou cancelar.
+6. Outros Requisitos
+6.1 Requisitos de Ambiente
+Ambiente de Desenvolvimento: Python 3.8+, pip, IDE/editor de código (VS Code, PyCharm), git.
+Ambiente de Execução: Python 3.8+, uvicorn (servidor ASGI para FastAPI).
+Banco de Dados: Não requer instalação separada, SQLite é baseado em arquivo.
+6.2 Requisitos de Operação
+Deploy: O sistema DEVE ser capaz de ser executado localmente de forma simples (ex: uvicorn main:app --reload).
+Logging: O sistema DEVE implementar um logging básico para registrar eventos importantes e erros.
+6.3 Requisitos Legais/Conformidade
+LGPD (Consideração): Embora para um projeto acadêmico a aplicação total seja complexa, o design do sistema DEVE considerar a minimização da coleta de dados sensíveis e a proteção básica dos dados pessoais dos pacientes, em conformidade com os princípios da Lei Geral de Proteção de Dados brasileira.
