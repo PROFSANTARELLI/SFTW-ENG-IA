@@ -1,0 +1,56 @@
+ATIVIDADE: MINI-DESIGN SPRINT - SISTEMA DE GESTOR DE METAS
+
+Fase do Ciclo de Vida: Análise de Escopo, Identificação de Requisitos, Esboço de Arquitetura Conceitual.
+
+Formato: Grupos
+
+OBJETIVO DA ATIVIDADE:
+1 - Desenvolver a capacidade de interpretar um escopo de projeto.
+2 - Identificar atores e requisitos funcionais e não-funcionais primários.
+3 - Esboçar uma arquitetura de sistema de alto nível, considerando a integração de IA.
+4 - Estimular o trabalho em equipe e a comunicação de ideias.
+
+CENÁRIO DO PROJETO:
+Sistema Gerenciador Pessoal de Metas
+
+Contexto: No mundo agitado de hoje, muitas pessoas lutam para manter o foco em suas metas de longo prazo e desenvolver hábitos saudáveis. O sistema propõe ser um assistente digital que não apenas rastreia metas e hábitos, 
+mas também oferece insights inteligentes para ajudar o usuário a ter sucesso.
+
+Escopo:
+Objetivo Principal: Criar um aplicativo web que permita aos usuários definir, acompanhar e gerenciar suas metas e hábitos diários, semanais ou mensais, com o apoio de funcionalidades inteligentes.
+
+Tecnologias de Referência:
+- Backend: Python (FastAPI pode ser usado como exemplo)
+- Banco de Dados: SQLite (para dados de metas, hábitos, progresso)
+- Frontend: Web (HTML/CSS, talvez alguns componentes JS interativos)
+
+Funcionalidades Essenciais:
+- Gerenciamento de Metas: Definir 5 metas (ex: "Aprender um novo idioma"), com prazos, descrição e categorias.
+- Gerenciamento de Hábitos: Criar e registrar 5 hábitos diários (ex: "Beber 2L de água", "Meditar 10 minutos"), com lembretes.
+- Registro de Progresso: Marcar o progresso em metas e a conclusão de hábitos.
+- Visualização: Apresentar gráficos simples ou um "calendário de hábitos" para mostrar o histórico de progresso.
+
+PENSANDO COM IA (Conceitualmente, para discussão inicial):
+Para esta fase inicial, como você imaginaria que a IA poderia enriquecer o sistema? Pense em pequenas funcionalidades que um componente de IA poderia oferecer.
+
+TAREFA:
+- CRIE 5 AGENTES DE IA: ESPECIALISTAS EM ARQUITETURA, REQUISITOS, DESENVOLVEDOR, TESTER e ENGENHEIRO CLOUD
+
+Cada grupo deverá realizar os seguintes passos e apresentar seus resultados ao final da aula:
+ - Entendimento do Escopo e Atores
+ - Leiam o escopo do projeto.
+ - Identifiquem e listem os principais atores que interagirão com o sistema. Pensem quem serão os usuários diretos e indiretos (pelo menos 2).
+ - Em uma frase, qual é a missão principal que o sistema deve cumprir para seu usuário?
+ - Identificação de Requisitos Funcionais Primários
+ - Para cada ator identificado, listem de 3 requisitos funcionais chave. (Ex: "O Usuário DEVE ser capaz de...", "O sistema DEVE permitir...")
+ - Para esta fase, não se preocupem com <<include>> ou <<extend>>, apenas listem as funcionalidades principais.
+ - Brainstorming de Integração de IA: Com base no escopo e nas funcionalidades essenciais, discutam em grupo e listem 2 ideias de como a Inteligência Artificial poderia ser integrada ao sistema para torná-lo "AI-Enhanced".
+ - Descrevam brevemente como essa IA funcionaria e qual benefício ela traria ao usuário.
+ - Esboço de Arquitetura Conceitual:  no draw.io desenhem um Diagrama de Componentes.
+
+ENTREGÁVEL AO PROFESSOR (por grupo):
+1 - Arquivo Markdown com: (INSIRA NO PROJETO GIT HUB)
+- Lista de Atores e Missão do sistema.
+- Lista de Requisitos Funcionais Primários por ator.
+- As 2 ideias de integração de IA, com descrição do funcionamento e benefício.
+- screenshot do Esboço de Arquitetura Conceitual.
