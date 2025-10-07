@@ -35,3 +35,11 @@ Crie uma conta na Netlify: Acesse netlify.com e crie uma conta gratuita, conecta
 Importe seu projeto: No painel, clique em "Add new site -> Import an existing project". Escolha o seu repositório.
 Configure e publique: Assim como a Vercel, a Netlify vai identificar seu projeto. Deixe as configurações de build em branco e clique em "Deploy site".
 Seu app estará online em um link aleatório que você pode personalizar, como <nome-personalizado>.netlify.app.
+
+
+ENTREGÁVEIS DESTA AULA:
+1 - 5 Novas implementações descritas
+2 - Roteiro detalhado de testes de 4 funcionalidades
+3 - Imagens de evidências dos testes executados
+4 - Projeto importado em novo repositório GitHub
+5 - App publicado na Web
