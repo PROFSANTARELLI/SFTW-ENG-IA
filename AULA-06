@@ -1,0 +1,37 @@
+ETAPAS DE:
+1 - MELHORIA DE ESCOPO DO SISTEMA (0,15 na AC)
+2 - TESTES DE SISTEMA (0,15 NA AC)
+3 - OPERACIONALIZAÇÃO DE SISTEMA (0,25 NA AVALIAÇÃO SEMESTRAL)
+
+MELHORIA DE ESCOPO DO SISTEMA:
+- No APP criado na aula passada você deverá pensar em 5 novas funcionalidades que o APP ainda não tem como melhoria
+- Pedir par IA uma sugestão de melhoria de UI para ficar mais bonito e aprensentável seu APP
+
+
+TESTES DE SISTEMA:
+- Baseado nos seus requisitos, velhos e novos, peça para a IA criar um roteiro de testes para testar 4 funcionalidades.
+- Documentar as evidências de teste com um documento de testes realizados
+
+
+OPERACIONALIZAÇÃO DE SISTEMA (BÔNUS DESAFIO)
+- Publicar no GITHUB PAGES
+GitHub Pages
+Como publicar:
+Certifique-se que seu código está no GitHub.
+Vá para as Configurações (Settings): Dentro do seu repositório, clique na aba "Settings".
+Acesse a seção "Pages": No menu lateral esquerdo, clique em "Pages".
+Configure a fonte de publicação:
+Em "Source", selecione "Deploy from a branch".
+Em "Branch", escolha a sua branch principal (geralmente main ou master) e a pasta /(root).
+Clique em "Save".
+Pronto! Após alguns minutos, seu site estará disponível no endereço: https://<seu-usuario>.github.io/<nome-do-repositorio>/.
+
+Opcional:
+Netlify
+Como publicar:
+Crie um repositório no GitHub: crie um novo repositório no GitHub e envie seus arquivos para ele.
+Envie seu código para o GitHub.
+Crie uma conta na Netlify: Acesse netlify.com e crie uma conta gratuita, conectando com seu GitHub.
+Importe seu projeto: No painel, clique em "Add new site -> Import an existing project". Escolha o seu repositório.
+Configure e publique: Assim como a Vercel, a Netlify vai identificar seu projeto. Deixe as configurações de build em branco e clique em "Deploy site".
+Seu app estará online em um link aleatório que você pode personalizar, como <nome-personalizado>.netlify.app.
