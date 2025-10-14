@@ -1,0 +1,19 @@
+TODOS OS GRUPOS PRECISAM ENTREGAR OS SEGUINTES ENTREGÁVEIS PARA O PROJETO TECH NO QUE TANGE A PARTE DE ENGENHARIA DE SOFTWARE:
+
+1 - ARQUITETURA E MODELAGEM - DEFINIÇÃO DE ESCOPO DO PROJETO (VALOR 0,25 NA AVALIAÇÃO SEMESTRAL)
+ - Documento PDF com o escopo completo do projeto com detalhes de negócio e técnicos, contando os detalhes do que será desenvolvido no projeto.
+ - Definição de qual IA será utilizada como CO-PILOTO do projeto
+ - Documento PDF com modelagem com diagrama de caso de uso completo com as principais funcionalidades
+
+2 - ANÁLISE DE REQUISITOS - DEFINIÇÃO DOS REQUISITOS COM ESTRUTRUTURA COMPLETA DE DOCUMENTO
+ - Documento PDF com todos os requisitos do projeto, funcionais e não funcionais usando uma estrutura padrão deste tipo de documento
+
+
+ENTREGÁVEIS DESTA AULA:
+1 - CRIAR UM NOVO PROJETO COM O NOME "PROJETO-TECH-2025-2"
+2 - CRIAR A ESTRUTURA DO BOARD COM 4 COLUNAS: "BACKLOG", "EM EXECUÇÃO", "VALIDAÇÃO", "FINALIZADO"
+3 - CRIAR OS CARTOES DO TIPO ISSUE COM OS NOMES: "ARQUITETURA", "REQUISITOS", "DESENVOLVIMENTO", "TESTES", "OPERAÇÃO"
+4 - COLOCAR OS ITENS DA ETAPA 1 DESTA AULA NO CARTÃO "ARQUITETURA"
+5 - COLOCAR OS ITENS DA ETAPA 2 DESTA AULA NO CARTÃO "REQUISITOS"
+6 - COLOCAR OS DOIS CARTÕES UTILIZADOS NA ETAPA DE EXECUÇÃO (não colocar em validação ainda)
+7 - DEIXAR OS DEMAIS CARTÕES EM BACKLOG
