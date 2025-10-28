@@ -18,8 +18,8 @@ Isso criará uma pasta venv com seu ambiente virtual.
 
 1.4 Ativar o Ambiente Virtual
 Windows:
-
 .\venv\Scripts\activate
+
 Você verá (venv) no início da linha de comando, indicando que o ambiente está ativo.
 
 1.5 Instalar Dependências
@@ -34,9 +34,9 @@ Para que o GitHub Actions e outras pessoas possam replicar seu ambiente, crie o 
 pip freeze > requirements.txt```
 Isso listará todas as bibliotecas instaladas no seu ambiente virtual.
 
-### **2. Implementação do Código do Aplicativo**
 
-#### **2.1 `database.py`**
+2. Implementação do Código do Aplicativo**
+2.1 `database.py`**
 
 # simple_task_manager/database.py
 import sqlite3
