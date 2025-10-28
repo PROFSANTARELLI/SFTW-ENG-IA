@@ -5,50 +5,39 @@ Missão integrar o aplicativo "Gerenciador de Tarefas" com as ferramentas modern
 1. Configuração Inicial do Projeto e Ambiente (VS Code)
 1.1 Criar a Estrutura de Pastas
 Abra o terminal (ou o terminal integrado do VS Code) e crie a estrutura do projeto:
-code
-Bash
+
 1.2 Abrir o Projeto no VS Code
 Agora, abra a pasta simple_task_manager no VS Code.
 File > Open Folder... e selecione a pasta simple_task_manager.
+
 1.3 Criar um Ambiente Virtual
 É crucial usar um ambiente virtual para gerenciar as dependências do seu projeto Python.
 No terminal integrado do VS Code (Ctrl + ou View > Terminal):
-code
-Bash
 python -m venv venv
 Isso criará uma pasta venv com seu ambiente virtual.
+
 1.4 Ativar o Ambiente Virtual
 Windows:
-code
-Bash
+
 .\venv\Scripts\activate
-macOS/Linux:
-code
-Bash
-source venv/bin/activate
 Você verá (venv) no início da linha de comando, indicando que o ambiente está ativo.
+
 1.5 Instalar Dependências
 Com o ambiente virtual ativo, instale as bibliotecas necessárias:
-code
-Bash
+
 pip install fastapi uvicorn jinja2
-# Opcional, para o linter que usaremos no CI:
 pip install flake8
+
 1.6 Criar o Arquivo requirements.txt
 Para que o GitHub Actions e outras pessoas possam replicar seu ambiente, crie o arquivo requirements.txt:
-code
-Bash
+
 pip freeze > requirements.txt```
 Isso listará todas as bibliotecas instaladas no seu ambiente virtual.
 
 ### **2. Implementação do Código do Aplicativo**
 
-Agora, crie os arquivos conforme detalhado no meu exemplo anterior. Certifique-se de que os nomes e a estrutura das pastas correspondam.
-
 #### **2.1 `database.py`**
-(Copie e cole o conteúdo fornecido anteriormente neste arquivo)
 
-```python
 # simple_task_manager/database.py
 import sqlite3
 
@@ -117,3 +106,375 @@ def delete_task(task_id: int):
     conn.close()
     
 init_db()
+
+
+2.2 main.py
+# simple_task_manager/main.py
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+
+from database import get_tasks, create_task, update_task_status, delete_task
+
+app = FastAPI(
+    title="Gerenciador de Tarefas Simples",
+    description="Um aplicativo CRUD de tarefas completo com FastAPI, Jinja e SQLite.",
+    version="0.1.0"
+)
+
+BASE_DIR = Path(__file__).resolve().parent
+
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+
+@app.get("/", response_class=HTMLResponse, summary="Página inicial com lista de tarefas")
+async def read_root(request: Request):
+    tasks = get_tasks()
+    return templates.TemplateResponse("index.html", {"request": request, "tasks": tasks})
+
+@app.post("/tasks", response_class=RedirectResponse, summary="Adicionar uma nova tarefa")
+async def add_task(request: Request, description: str = Form(...)):
+    if description and description.strip():
+        create_task(description.strip())
+    return RedirectResponse(url="/", status_code=303)
+
+@app.post("/tasks/{task_id}/complete", response_class=RedirectResponse, summary="Marcar tarefa como concluída/não concluída")
+async def toggle_complete_task(task_id: int, request: Request, completed: str = Form(...)):
+    is_completed = completed.lower() == 'true'
+    update_task_status(task_id, is_completed)
+    return RedirectResponse(url="/", status_code=303)
+
+@app.post("/tasks/{task_id}/delete", response_class=RedirectResponse, summary="Excluir uma tarefa")
+async def remove_task(task_id: int, request: Request):
+    delete_task(task_id)
+    return RedirectResponse(url="/", status_code=303)
+
+
+2.3 templates/index.html
+
+<!-- simple_task_manager/templates/index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Meu Gerenciador de Tarefas Simples</h1>
+
+        <div class="add-task">
+            <form action="/tasks" method="post">
+                <input type="text" name="description" placeholder="Adicionar nova tarefa..." required>
+                <button type="submit">Adicionar Tarefa</button>
+            </form>
+        </div>
+
+        <ul class="task-list">
+            {% if tasks %}
+                {% for task in tasks %}
+                <li class="task-item {% if task.completed %}completed{% endif %}">
+                    <span class="task-description">{{ task.description }}</span>
+                    <div class="task-actions">
+                        <form action="/tasks/{{ task.id }}/complete" method="post" style="display: inline;">
+                            <input type="hidden" name="completed" value="{{ 'false' if task.completed else 'true' }}">
+                            <button type="submit" class="toggle-complete">
+                                {% if task.completed %}
+                                Desmarcar
+                                {% else %}
+                                Concluir
+                                {% endif %}
+                            </button>
+                        </form>
+                        <form action="/tasks/{{ task.id }}/delete" method="post" style="display: inline;">
+                            <button type="submit" class="delete-task">Excluir</button>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            {% else %}
+                <li class="no-tasks">Nenhuma tarefa cadastrada. Adicione uma!</li>
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>
+
+
+2.4 static/style.css
+
+/* simple_task_manager/static/style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef1f5;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+.add-task form {
+    display: flex;
+    margin-bottom: 25px;
+}
+
+.add-task input[type="text"] {
+    flex-grow: 1;
+    padding: 12px 18px;
+    border: 1px solid #c0c0c0;
+    border-radius: 6px;
+    margin-right: 10px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.add-task button {
+    background-color: #3498db; /* Azul vibrante */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.add-task button:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.add-task button:active {
+    transform: translateY(0);
+}
+
+
+.task-list {
+    list-style: none;
+    padding: 0;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #eceff1;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.task-item:hover {
+    background-color: #fcfcfc;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-item .task-description {
+    flex-grow: 1;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.task-item.completed .task-description {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+}
+
+.task-actions button {
+    font-size: 0.9em;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.task-actions button.toggle-complete {
+    background-color: #27ae60; /* Verde */
+    color: white;
+}
+
+.task-actions button.toggle-complete:hover {
+    background-color: #229954;
+    transform: translateY(-1px);
+}
+
+.task-actions button.delete-task {
+    background-color: #e74c3c; /* Vermelho */
+    color: white;
+}
+
+.task-actions button.delete-task:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+}
+
+.no-tasks {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 20px;
+    font-style: italic;
+}
+
+3. Configuração do Git e GitHub
+3.1 Inicializar um Repositório Git Local
+No terminal integrado do VS Code, dentro da pasta simple_task_manager:
+git init
+
+3.2 Criar um .gitignore
+Crie um arquivo chamado .gitignore na raiz do seu projeto (simple_task_manager/) com o seguinte conteúdo. Isso evita que arquivos desnecessários (como o ambiente virtual e o banco de dados local) sejam enviados para o GitHub.
+# .gitignore
+venv/
+*.pyc
+__pycache__/
+.vscode/
+
+# Python-specific
+.env
+.DS_Store
+*.db
+tasks.db
+
+
+3.3 Adicionar Arquivos e Fazer o Primeiro Commit
+git add .
+git commit -m "Initial commit: Simple Task Manager with FastAPI and SQLite"
+
+
+3.4 Criar um Repositório no GitHub
+Vá para GitHub e faça login.
+Clique no botão "New" para criar um novo repositório.
+Dê um nome ao seu repositório (ex: simple-task-manager).
+Defina-o como Public ou Private (sua escolha).
+NÃO marque "Add a README file", "Add .gitignore" ou "Choose a license" neste momento, pois você já os tem localmente.
+Clique em "Create repository".
+Você verá uma página com instruções sobre como enviar um repositório existente.
+
+
+3.5 Ligar o Repositório Local ao Remoto e Enviar
+Copie e cole os comandos fornecidos pelo GitHub na página do seu novo repositório (geralmente algo parecido com):
+git remote add origin https://github.com/SEU_USUARIO/simple-task-manager.git
+git branch -M main
+git push -u origin main
+Substitua SEU_USUARIO pelo seu nome de usuário do GitHub.
+Se for sua primeira vez enviando para o GitHub, ele pode pedir suas credenciais.
+Agora seu código está salvo no GitHub!
+
+
+4. Configurar CI/CD com GitHub Actions
+GitHub Actions permite automatizar fluxos de trabalho diretamente no seu repositório GitHub.
+
+
+4.1 Criar a Estrutura de Pastas para Actions
+No seu projeto local (e depois commitando para o GitHub), crie:
+mkdir -p .github/workflows
+
+
+4.2 Criar o Arquivo de Workflow (ci.yml)
+Dentro da pasta .github/workflows/, crie um arquivo chamado ci.yml (ou main.yml). Este arquivo define as etapas do seu pipeline de CI (Continuous Integration).
+simple_task_manager/.github/workflows/ci.yml
+
+# .github/workflows/ci.yml
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Usado por algumas ferramentas de linter, boa prática
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip' # Cachea as dependências do pip para builds mais rápidas
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        # C901: Função muito complexa, E9, F8: Erros de sintaxe ou variáveis não definidas
+        # E501: Linha muito longa (ajuste para 99 caracteres, padrão do Black)
+        # B008: Argumento padrão mutável
+        # W503: Quebra de linha antes do operador binário
+        # Desabilita E203 porque entra em conflito com o Black.
+        flake8 . --count --select=E9,F63,F7,F82 --exclude=venv,.git --show-source --statistics
+        flake8 . --count --max-complexity=10 --max-line-length=99 --exclude=venv,.git --statistics
+        
+    - name: Run a simple script (Simulates basic tests)
+      run: |
+        python -c "import database; print('Database initialized (simulated CI check).')"
+        python -c "import main; print('FastAPI app imported (simulated CI check).')"
+        # Em um projeto real, você rodaria 'pytest' aqui!
+        # Por exemplo: pytest .
+
+
+4.3 Fazer Commit e Enviar o Workflow para o GitHub
+git add .github/
+git commit -m "feat: Add GitHub Actions CI workflow for Python"
+git push origin main
+Após o git push, vá para o seu repositório no GitHub, clique na aba "Actions". Você verá seu workflow "Python CI" executando (ou já concluído com sucesso se tudo estiver correto!). Cada push ou Pull Request para a branch main agora acionará automaticamente este workflow, garantindo que o código passe pelos checks definidos.
+
+
+5. Rodar o Aplicativo Localmente
+Sempre que precisar testar o aplicativo em sua máquina:
+Abra o terminal na pasta simple_task_manager.
+
+Instale a biblioteca:
+pip install python-multipart
+
+Atualize seu requirements.txt (muito importante!):
+
+Depois de instalar, para que o GitHub Actions e qualquer outra pessoa que use seu projeto instale essa nova dependência automaticamente, você deve atualizar o arquivo requirements.txt.
+pip freeze > requirements.txt
+
+Execute o FastAPI:
+uvicorn main:app --reload
+Abra seu navegador em http://127.0.0.1:8000.
+
