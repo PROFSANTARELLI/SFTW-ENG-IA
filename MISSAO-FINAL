@@ -425,10 +425,10 @@ jobs:
       with:
         fetch-depth: 0 # Usado por algumas ferramentas de linter, boa prática
 
-    - name: Set up Python 3.10
+    - name: Set up Python 3.13
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.13'
         cache: 'pip' # Cachea as dependências do pip para builds mais rápidas
 
     - name: Install dependencies
